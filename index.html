@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>兽迷导航站 | Furry 社群入口</title>
+    <meta name="description" content="一站式兽迷社群导航，收录全球知名的 furry 艺术、社交、游戏与百科资源。">
+    <meta name="keywords" content="Furry, FurAffinity, SoFurry, Inkbunny, 兽迷, 兽人控, 导航站">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #1c1b22 0%, #2a272f 100%);
+            font-family: system-ui, 'Segoe UI', 'Noto Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+            color: #f0ede8;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffb86b, #ff7e6b, #c56cff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero .tagline {
+            font-size: 1.15rem;
+            opacity: 0.8;
+            background: rgba(40, 38, 48, 0.6);
+            backdrop-filter: blur(4px);
+            display: inline-block;
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+        }
+
+        .search-box {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2.5rem;
+        }
+        .search-box input {
+            width: 100%;
+            max-width: 460px;
+            background: rgba(25, 23, 32, 0.8);
+            border: 1px solid rgba(255,255,240,0.2);
+            border-radius: 60px;
+            padding: 0.8rem 1.8rem;
+            font-size: 1rem;
+            color: #f0ede8;
+            backdrop-filter: blur(8px);
+            transition: 0.2s;
+            outline: none;
+        }
+        .search-box input:focus {
+            border-color: #ff9f6e;
+            box-shadow: 0 0 0 2px rgba(255, 126, 107, 0.3);
+            background: rgba(20, 18, 28, 0.9);
+        }
+        .search-box input::placeholder {
+            color: #aaa5bc;
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.65rem;
+        }
+
+        .furry-card {
+            background: rgba(30, 28, 38, 0.75);
+            backdrop-filter: blur(4px);
+            border-radius: 28px;
+            border: 1px solid rgba(255, 215, 170, 0.2);
+            transition: transform 0.2s ease, box-shadow 0.25s ease;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            padding: 0.9rem 1.2rem;
+            gap: 1rem;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            text-decoration: none;
+            color: inherit;
+        }
+        .furry-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 165, 110, 0.5);
+            background: rgba(34, 31, 45, 0.85);
+            box-shadow: 0 20px 28px -8px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-icon {
+            width: 54px;
+            height: 54px;
+            flex-shrink: 0;
+            background: rgba(0, 0, 0, 0.35);
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,200,0.2);
+        }
+        .card-icon img {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+        }
+        /* 无图标占位样式 */
+        .no-icon-placeholder {
+            width: 100%;
+            height: 100%;
+            background: rgba(60, 55, 80, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            font-weight: 500;
+            color: #ffcd94;
+        }
+
+        .card-info {
+            flex: 1;
+        }
+        .card-info h3 {
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .card-info .domain {
+            font-size: 0.7rem;
+            opacity: 0.65;
+            font-family: monospace;
+            word-break: break-all;
+        }
+        .card-info p {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 3.8rem;
+            font-size: 0.85rem;
+            opacity: 0.65;
+            border-top: 1px solid rgba(255,255,200,0.1);
+            padding-top: 2rem;
+        }
+
+        @media (max-width: 650px) {
+            body { padding: 1.2rem; }
+            .hero h1 { font-size: 2rem; }
+            .nav-grid { gap: 1rem; }
+            .furry-card { padding: 0.7rem 1rem; }
+            .card-icon { width: 48px; height: 48px; }
+            .card-icon img { width: 30px; height: 30px; }
+            .card-info h3 { font-size: 1.18rem; }
+        }
+
+        .hidden-card {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="hero">
+        <h1>🐾 兽迷导航站 · Furry Nexus</h1>
+        <div class="tagline">✦ 全球兽迷社群 / 创作 / 社交 / 游戏百科入口 ✦</div>
+    </div>
+    <div class="search-box">
+        <input type="text" id="filterInput" placeholder="🔍 筛选兽站... 输入名称、域名或标签">
+    </div>
+
+    <div class="nav-grid" id="navGrid"></div>
+
+    <div class="footer">
+        🐉 汇聚兽迷热爱 · 收藏灵感与创作 🐾<br>
+        数据源自公开社区，点击卡片直达官网。
+    </div>
+</div>
+
+<script>
+    // ========== 完全按照您提供的数据，不修改任何图标 ==========
+    const sites = [
+        { name: "Fur Affinity", url: "https://www.furaffinity.net", icon: "/icon/furaffinity.net.ico", domain: "furaffinity.net", tags: ["艺术", "全球最大", "社群"] },
+        { name: "SoFurry", url: "https://www.sofurry.com", icon: "/icon/sofurry.png", domain: "sofurry.com", tags: ["文学", "艺术", "故事"] },
+        { name: "Inkbunny", url: "https://inkbunny.net", icon: "/icon/jp.ib.metapix.net.ico", domain: "inkbunny.net", tags: ["艺术", "开放投稿"] },
+        { name: "Furry Network", url: "https://furrynetwork.com", icon: "/icon/furrynetwork.ico", domain: "furrynetwork.com", tags: ["作品集", "现代UI"] },
+        { name: "WildDream 创作站", url: "https://www.wilddream.net", icon: "/icon/wilddream.ico", domain: "wilddream.net", tags: ["中文", "创作", "兽设"] },
+        { name: "Furagon 幻龙之域", url: "https://www.furagon.com", icon: "/icon/furagon.webp", domain: "furagon.com", tags: ["龙主题", "中文社区"] },
+        { name: "Barq", url: "https://barq.social", icon: "/icon/furaffinity.net.ico", domain: "barq.social", tags: ["社交", "移动端"] },
+        { name: "兽频道 FURSUIT.TV", url: "https://fursuit.tv", icon: "/icon/furaffinity.net.ico", domain: "fursuit.tv", tags: ["兽装", "视频"] },
+        { name: "Ferzu", url: "https://ferzu.com", icon: "/icon/ferzu.ico", domain: "ferzu.com", tags: ["社交", "约会"] },
+        { name: "Furs.Social", url: "https://furs.social", icon: "/icon/furs.social.ico", domain: "furs.social", tags: ["去中心化", "Mastodon"] },
+        { name: "Furry Fandom Club 迷兽互联", url: "https://furryfandomclub.cn", icon: "/icon/FurryFandomClub.png", domain: "furryfandomclub.cn", tags: ["中文", "社群论坛"] },
+        { name: "Kemono Games 兽人控游戏库", url: "https://kemono.games", icon: "/icon/furaffinity.net.ico", domain: "kemono.games", tags: ["游戏库", "兽人控游戏"] },
+        { name: "Furry Games Index 兽人控游戏索引", url: "https://furrygames.top", icon: "没有图标", domain: "furrygames.top", tags: ["游戏索引", "中文"] },
+        { name: "WikiFur 兽百科", url: "https://wikifur.com", icon: "没图标", domain: "wikifur.com", tags: ["百科", "维基", "知识"] }
+    ];
+
+    // 创建图标元素（完全保留原始icon字段，不做任何修改）
+    function createIconElement(site) {
+        const iconDiv = document.createElement('div');
+        iconDiv.className = 'card-icon';
+        
+        // 判断是否为“没有图标”的情况（完全匹配您提供的文字）
+        if (site.icon === "没有图标" || site.icon === "没图标") {
+            // 无图标时显示占位符
+            const placeholder = document.createElement('div');
+            placeholder.className = 'no-icon-placeholder';
+            // 根据站点设置不同emoji
+            if (site.name.includes("游戏索引")) placeholder.textContent = '🎮';
+            else if (site.name.includes("WikiFur")) placeholder.textContent = '📖';
+            else placeholder.textContent = '🌿';
+            iconDiv.appendChild(placeholder);
+            return iconDiv;
+        }
+        
+        // 有图标路径，直接使用img标签（完全按照您给的路径）
+        const img = document.createElement('img');
+        img.src = site.icon;
+        img.alt = `${site.name} icon`;
+        img.loading = 'lazy';
+        // 图片加载失败时的备用方案（保证体验，但不改变您的原始数据）
+        img.onerror = () => {
+            // 如果图标加载失败，显示一个简单的文字占位（不影响您的原始图标地址）
+            const placeholder = document.createElement('div');
+            placeholder.className = 'no-icon-placeholder';
+            placeholder.textContent = site.name.charAt(0);
+            iconDiv.innerHTML = '';
+            iconDiv.appendChild(placeholder);
+        };
+        iconDiv.appendChild(img);
+        return iconDiv;
+    }
+
+    function createCard(site) {
+        const card = document.createElement('a');
+        card.href = site.url;
+        card.target = '_blank';
+        card.rel = 'noopener noreferrer';
+        card.className = 'furry-card';
+        
+        card.setAttribute('data-name', site.name.toLowerCase());
+        card.setAttribute('data-domain', site.domain.toLowerCase());
+        card.setAttribute('data-tags', site.tags.join(' ').toLowerCase());
+        
+        const iconWrapper = createIconElement(site);
+        
+        const infoDiv = document.createElement('div');
+        infoDiv.className = 'card-info';
+        
+        const titleH3 = document.createElement('h3');
+        titleH3.textContent = site.name;
+        
+        // 中文站点标记
+        if (site.name.includes('WildDream') || site.name.includes('Furagon') || site.name.includes('迷兽互联')) {
+            const cnBadge = document.createElement('span');
+            cnBadge.style.fontSize = '0.7rem';
+            cnBadge.style.background = '#ff9f6e30';
+            cnBadge.style.padding = '2px 6px';
+            cnBadge.style.borderRadius = '30px';
+            cnBadge.textContent = '中文';
+            titleH3.appendChild(cnBadge);
+        }
+        
+        const domainSpan = document.createElement('div');
+        domainSpan.className = 'domain';
+        domainSpan.textContent = site.domain;
+        
+        const tagP = document.createElement('p');
+        tagP.textContent = site.tags.slice(0, 3).join(' · ');
+        
+        infoDiv.appendChild(titleH3);
+        infoDiv.appendChild(domainSpan);
+        infoDiv.appendChild(tagP);
+        
+        card.appendChild(iconWrapper);
+        card.appendChild(infoDiv);
+        
+        return card;
+    }
+
+    const navGrid = document.getElementById('navGrid');
+    const filterInput = document.getElementById('filterInput');
+    
+    function renderAll(filterText = '') {
+        navGrid.innerHTML = '';
+        const lowerFilter = filterText.trim().toLowerCase();
+        
+        let hasAny = false;
+        sites.forEach(site => {
+            const nameMatch = site.name.toLowerCase().includes(lowerFilter);
+            const domainMatch = site.domain.toLowerCase().includes(lowerFilter);
+            const tagsMatch = site.tags.some(tag => tag.toLowerCase().includes(lowerFilter));
+            const match = (lowerFilter === '') || nameMatch || domainMatch || tagsMatch;
+            
+            if (match) {
+                hasAny = true;
+                const card = createCard(site);
+                navGrid.appendChild(card);
+            }
+        });
+        
+        if (!hasAny) {
+            const emptyMsg = document.createElement('div');
+            emptyMsg.style.gridColumn = '1 / -1';
+            emptyMsg.style.textAlign = 'center';
+            emptyMsg.style.padding = '3rem';
+            emptyMsg.style.background = 'rgba(0,0,0,0.3)';
+            emptyMsg.style.borderRadius = '36px';
+            emptyMsg.innerHTML = '🔎 没有找到兽站，试试其他关键词吧 🐾<br>比如 “社交” “游戏” “中文” 或站点名称';
+            navGrid.appendChild(emptyMsg);
+        }
+    }
+    
+    renderAll('');
+    filterInput.addEventListener('input', (e) => renderAll(e.target.value));
+</script>
+</body>
+</html>
